@@ -84,7 +84,21 @@ test('unlink refuses an unknown workspace without creating it', () => {
   assert.match(bad.stderr, /no workspace named "mian"; existing workspaces: default/);
   assert.ok(!fs.existsSync(path.join(home, 'mian.json')), 'unknown workspace was not created');
 });
+test('dream refuses an unknown workspace without creating it', () => {
+  const { home, run } = fixture();
+  const bad = run('dream', '--workspace', 'mian');
+  assert.equal(bad.status, 1);
+  assert.equal(bad.stdout, '');
+  assert.match(bad.stderr, /no workspace named "mian"; existing workspaces: default/);
+  assert.ok(!fs.existsSync(path.join(home, 'mian.json')), 'unknown workspace was not created');
+});
 
+test('dream --prompt works with an unknown workspace', () => {
+  const { run } = fixture();
+  const prompt = run('dream', '--prompt', '--workspace', 'mian');
+  assert.equal(prompt.status, 0);
+  assert.ok(prompt.stdout.length > 0);
+});
 test('unlink reports when a known workspace is not linked', () => {
   const { run } = fixture();
   const unlink = run('unlink');

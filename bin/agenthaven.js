@@ -318,6 +318,7 @@ switch (cmd) {
   case 'dream': {
     const dreams = require('../src/dream');
     if (has('prompt')) { console.log(dreams.CLAUDE_DREAMER); break; }
+    requireKnownWorkspace(workspace);
     const d = dreams.dream(store());
     console.log(d.summary);
     for (const p of d.proposals) console.log(`- [${p.status}] ${p.kind}: ${p.title}`);
